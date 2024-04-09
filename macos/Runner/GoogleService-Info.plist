@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>API_KEY</key>
+	<string>AIzaSyAdd9V6TRMR68dRh4xLBdVtAHRyoAC0MA4</string>
+	<key>GCM_SENDER_ID</key>
+	<string>374546642159</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.ordiniRistorante.RunnerTests</string>
+	<key>PROJECT_ID</key>
+	<string>ristorante-c94d2</string>
+	<key>STORAGE_BUCKET</key>
+	<string>ristorante-c94d2.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:374546642159:ios:2ea45173bc59f587fcd71a</string>
+</dict>
+</plist>

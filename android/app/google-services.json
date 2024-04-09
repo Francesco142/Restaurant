@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "374546642159",
+    "project_id": "ristorante-c94d2",
+    "storage_bucket": "ristorante-c94d2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:374546642159:android:2e2813d56d59eef4fcd71a",
+        "android_client_info": {
+          "package_name": "com.example.ordini_ristorante"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC1D2SoP_5KU-gPAQdNTr-jNX4aFcFWDnk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
