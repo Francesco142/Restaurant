@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ordini_ristorante/features/menu/presentation/pages/menu_page.dart';
 
 import '../../../../routes/routes.dart';
 import '../../data/repositiories_impl/user_repo_impl.dart';
@@ -22,17 +23,18 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        toolbarHeight: 70,
+        title: const Text(
           "Francesco's Restaurant",
-          style: TextStyle(fontWeight: FontWeight.w700, color: Colors.white),
+          style: TextStyle(fontWeight: FontWeight.w500, color: Colors.white, fontSize: 27),
         ),
         backgroundColor: Theme.of(context).colorScheme.primary,
-        // leading: Padding(
-        //   padding: const EdgeInsets.only(left: 4, bottom: 4),
-        //   child: Image.asset(
-        //     ("assets/logo.png"),
-        //   ),
-        // ),
+        leading: Padding(
+          padding: const EdgeInsets.only(left: 6, bottom: 6),
+          child: Image.asset(
+            "assets/logo.png",
+          ),
+        ),
       ),
       body: Column(
         children: [
@@ -78,7 +80,15 @@ class _LoginPageState extends State<LoginPage> {
               "Crea nuovo account",
               style: TextStyle(fontSize: 18),
             )
-          )
+          ),
+          // prova per skippare il login
+          ElevatedButton(
+            onPressed: () {
+              Get.to(
+                  MenuPage()
+              );
+            },
+            child: Text("SKIP"),)
         ],
       ),
     );
@@ -92,7 +102,7 @@ class _LoginPageState extends State<LoginPage> {
 
     if (user != null) {
       print("User logged");
-      Get.toNamed(Routes.HOME);
+      Get.toNamed(Routes.MENU);
     } else {
       print("errore");
     }
