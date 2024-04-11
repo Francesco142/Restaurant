@@ -6,10 +6,13 @@ import '../controllers/cart_controller.dart';
 
 class CartPage extends StatelessWidget {
 
-  final CartController cartController = Get.find(); // Ottieni il controller del carrello
+  const CartPage({super.key}); 
 
   @override
   Widget build(BuildContext context) {
+
+    final CartController cartController = Get.find<CartController>();
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Carrello'),

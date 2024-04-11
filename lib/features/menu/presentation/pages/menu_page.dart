@@ -2,11 +2,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ordini_ristorante/features/cart/presentation/controllers/cart_controller.dart';
 import 'package:ordini_ristorante/features/menu/data/models/dish.dart';
 
-import '../../data/repositiories_impl/firestore.dart';
-import '../controllers/cart_controller.dart';
-import 'cart_page.dart';
+import '../../data/repositiories_impl/menu_repo_impl.dart';
+import '../../../cart/presentation/pages/cart_page.dart';
 
 class MenuPage extends StatefulWidget {
   const MenuPage({super.key});
@@ -17,7 +17,7 @@ class MenuPage extends StatefulWidget {
 
 class _MenuPageState extends State<MenuPage> {
 
-  final FirestoreService firestoreService = FirestoreService();
+  final MenuRepositoryImpl menuRepoImpl = MenuRepositoryImpl();
 
   final CartController cartController = Get.put(CartController());
 
@@ -61,7 +61,7 @@ class _MenuPageState extends State<MenuPage> {
         ),
         body: StreamBuilder<QuerySnapshot>(
 
-          stream: firestoreService.getDishes(),
+          stream: menuRepoImpl.getDishes(),
           builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
 
             if (snapshot.hasData){
@@ -200,7 +200,7 @@ class _MenuPageState extends State<MenuPage> {
                                         ),
                                         Obx( () =>
                                             Text(
-                                              cartController.quantity.length > index ? cartController.quantity[index].toString() : '0',
+                                                cartController.quantity[index].toString(),
                                               style: TextStyle(
                                                   fontSize: 18
                                               ),
