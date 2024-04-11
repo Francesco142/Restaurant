@@ -48,17 +48,21 @@ class _SignupPageState extends State<SignupPage> {
                 margin: EdgeInsets.all(30),
                 child: Column(
                     children: [
-                      TextField(
+                      TextFormField(
                         controller: emailController,
-                        decoration: InputDecoration(border: OutlineInputBorder(borderRadius: BorderRadius.circular(20))),
+                        decoration: InputDecoration(
+                            labelText: "Inserisci la tua mail",
+                            border: OutlineInputBorder(),
+                            prefixIcon: Icon(Icons.email)
+                        ),
                       ),
                       SizedBox(height: 30),
-                      TextField(
+                      TextFormField(
                         controller: passwordController,
-                        decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(20)
-                            )
+                        decoration:InputDecoration(
+                            labelText: "Inserisci la tua password",
+                            border: OutlineInputBorder(),
+                            prefixIcon: Icon(Icons.password)
                         ),
                       ),
                       SizedBox(height: 30),

@@ -1,13 +1,20 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ordini_ristorante/features/menu/data/datasources/menu_datasource.dart';
+import 'package:ordini_ristorante/features/menu/domain/repositories/menu_repo.dart';
 
-class MenuRepositoryImpl {
+class MenuRepositoryImpl extends MenuRepository{
 
-  final CollectionReference dishes =
-      FirebaseFirestore.instance.collection('dishes');
+  final MenuDatasource menuDatasource;
 
+  MenuRepositoryImpl(this.menuDatasource);
+
+  @override
   Stream<QuerySnapshot> getDishes() {
-    final dishesStream = dishes.snapshots();
 
-    return dishesStream;
+    return menuDatasource.getDishes();
+
   }
+
+
+
 }

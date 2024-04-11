@@ -14,10 +14,13 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+
   final UserRepositoryImpl login = UserRepositoryImpl();
 
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -38,26 +41,35 @@ class _LoginPageState extends State<LoginPage> {
       ),
       body: Column(
         children: [
+          // Image.asset(
+          //   "assets/login.png",
+          // ),
           Text(
             "Benvenuti nella pagina di login ",
             style: TextStyle(fontSize: 45, fontWeight: FontWeight.bold),
           ),
           Form(
+            key: _formKey,
             child: Container(
                 margin: EdgeInsets.all(30),
-                child: Column(children: [
-                  TextField(
-                    controller: emailController,
-                    decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(20))),
-                  ),
+                child: Column(
+                    children: [
+                    TextFormField(
+                      controller: emailController,
+                      decoration: InputDecoration(
+                          labelText: "Inserisci la tua mail",
+                          border: OutlineInputBorder(),
+                          prefixIcon: Icon(Icons.email)
+                      ),
+                    ),
                   SizedBox(height: 30),
-                  TextField(
+                  TextFormField(
                     controller: passwordController,
-                    decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(20))),
+                    decoration:InputDecoration(
+                        labelText: "Inserisci la tua password",
+                        border: OutlineInputBorder(),
+                        prefixIcon: Icon(Icons.password)
+                    ),
                   ),
                   SizedBox(height: 30),
                   ElevatedButton(
@@ -84,9 +96,7 @@ class _LoginPageState extends State<LoginPage> {
           // prova per skippare il login
           ElevatedButton(
             onPressed: () {
-              Get.to(
-                  MenuPage()
-              );
+              Get.toNamed(Routes.MENU);
             },
             child: Text("SKIP"),)
         ],
