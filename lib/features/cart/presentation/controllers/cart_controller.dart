@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 
 import '../../data/models/cart_item.dart';
-import '../../data/models/dish.dart';
+import '../../../menu/data/models/dish.dart';
 
 class CartController extends GetxController {
 

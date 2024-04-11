@@ -1,6 +1,6 @@
 
 
-import 'dish.dart';
+import '../../../menu/data/models/dish.dart';
 
 class CartItem {
 
