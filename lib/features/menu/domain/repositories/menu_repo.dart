@@ -5,4 +5,6 @@ abstract class MenuRepository {
 
   Stream<QuerySnapshot> getDishes();
 
+  Future<String> getLogoUrl();
+
 }

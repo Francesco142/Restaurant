@@ -6,6 +6,8 @@ class MenuRestaurantController extends GetxController{
 
   final MenuRepository menuRepository;
 
+  String logoUrl = "";
+
   MenuRestaurantController(this.menuRepository);
 
   Stream<QuerySnapshot> streamDishes(){
@@ -13,5 +15,18 @@ class MenuRestaurantController extends GetxController{
     return menuRepository.getDishes();
 
   }
+
+
+  @override
+  void onInit() async{
+
+    logoUrl = await menuRepository.getLogoUrl();
+
+    update();
+
+    super.onInit();
+
+  }
+
 
 }

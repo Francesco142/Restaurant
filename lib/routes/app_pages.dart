@@ -8,6 +8,7 @@ import 'package:ordini_ristorante/routes/routes.dart';
 
 import '../features/cart/bindings/cart_binding.dart';
 import '../features/home/presentation/pages/home_page.dart';
+import '../features/login/bindings/user_binding.dart';
 
 
 class AppPages{
@@ -15,12 +16,12 @@ class AppPages{
     GetPage(
       name: Routes.LOGIN,
       page: () => const LoginPage(),
-      //binding: HomeBinding()
+      binding: UserBinding()
     ),
     GetPage(
       name: Routes.SIGNUP,
       page: () => const SignupPage(),
-      //binding: HomeBinding()
+      binding: UserBinding()
     ),
     GetPage(
       name: Routes.HOME,
