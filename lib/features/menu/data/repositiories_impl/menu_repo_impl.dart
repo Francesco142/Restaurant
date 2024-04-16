@@ -15,6 +15,12 @@ class MenuRepositoryImpl extends MenuRepository{
 
   }
 
+  @override
+  Future<String> getLogoUrl() async{
+
+    return await menuDatasource.getLogoUrl();
+  }
+
 
 
 }

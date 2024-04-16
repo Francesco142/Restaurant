@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 class MenuDatasource {
 
@@ -10,4 +11,15 @@ class MenuDatasource {
 
     return dishesStream;
   }
+
+  Future<String> getLogoUrl() async{
+
+    Reference logo = FirebaseStorage.instance.ref();
+
+    var imageRef = logo.child("logo.png");
+
+    return await imageRef.getDownloadURL();
+
+  }
+
 }

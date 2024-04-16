@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:ordini_ristorante/features/login/data/repositiories_impl/user_repo_impl.dart';
 
 import '../../../../routes/routes.dart';
+import '../controllers/user_controller.dart';
 
 class SignupPage extends StatefulWidget {
   const SignupPage({super.key});
@@ -15,7 +16,6 @@ class SignupPage extends StatefulWidget {
 
 class _SignupPageState extends State<SignupPage> {
 
-  final UserRepositoryImpl login = UserRepositoryImpl();
 
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -84,6 +84,8 @@ class _SignupPageState extends State<SignupPage> {
 
     String email = emailController.text;
     String password = passwordController.text;
+
+    UserController login = Get.find<UserController>();
 
     User? user = await login.signUp(email, password);
 
