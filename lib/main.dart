@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
       getPages: AppPages.routes,
       title: 'Flutter Demo',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.black),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.black ),
         useMaterial3: true,
       ),
     );

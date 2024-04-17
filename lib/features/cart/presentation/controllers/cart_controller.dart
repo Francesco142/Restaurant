@@ -12,6 +12,8 @@ class CartController extends GetxController {
 
   void initializeQuantity(List<Dish> dishItems) {
 
+    quantity.clear();
+
     // Inizializza la lista quantity con la stessa lunghezza di dishItems
     if (quantity.isEmpty) {
       for (int i = 0; i < dishItems.length; i++) {
@@ -31,14 +33,14 @@ class CartController extends GetxController {
     quantity[index]++;
   }
 
-  void addToCart(Dish dish, int quantity ) {
+  void addToCart(Dish dish, int quantity) {
 
     // Variabile per memorizzare l'elemento trovato
     CartItem? existingCartItem;
 
     // Ciclo per cercare l'elemento nella lista
     for (var item in cartItems) {
-      if (item.dish == dish) {
+      if (item.dish.title == dish.title) {
         existingCartItem = item;
       }
     }
@@ -55,4 +57,5 @@ class CartController extends GetxController {
   void removeFromCart(CartItem cartItem) {
     cartItems.remove(cartItem);
   }
+
 }
