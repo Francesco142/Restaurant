@@ -26,7 +26,6 @@ class _LoginPageState extends State<LoginPage> {
           // Aggiunto per evitare l'overflow della tastiera
           resizeToAvoidBottomInset: false,
           appBar: AppBar(
-            toolbarHeight: 65,
             title: const Text(
               "Francesco's Restaurant",
               style: TextStyle(
