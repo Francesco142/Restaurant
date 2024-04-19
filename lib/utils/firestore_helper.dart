@@ -1,6 +1,8 @@
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class FirestoreHelper {
+
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
   // Metodo per creare o aggiornare un documento
@@ -27,4 +29,17 @@ class FirestoreHelper {
   Future<void> deleteDocument(String collectionPath, String docId) async {
     await _db.collection(collectionPath).doc(docId).delete();
   }
+
+  // Metodo per eliminare tutti i documenti di una raccolta
+  Future<void> deleteAllDocuments(String collectionPath) async {
+
+    var querySnapshot = await _db.collection(collectionPath).get();
+
+    // Itera su tutti i documenti ed eliminali
+    for (var document in querySnapshot.docs) {
+      await document.reference.delete();
+    }
+
+  }
+
 }

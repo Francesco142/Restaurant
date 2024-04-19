@@ -18,162 +18,166 @@ class SignupPage extends StatefulWidget {
 
 class _SignupPageState extends State<SignupPage> {
 
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController regMailController = TextEditingController();
+  final TextEditingController regPasswordController = TextEditingController();
+  final TextEditingController telefono = TextEditingController();
+  final TextEditingController nome = TextEditingController();
+  final TextEditingController cognome = TextEditingController();
 
   final _signupFormKey = GlobalKey<FormState>();
 
-  double sizeBoxHeight = 22;
+  double sizeBoxHeight = 20;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      // Aggiunto per evitare l'overflow della tastiera
-      resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        leading: BackButton(
-            color: Colors.white
-        ),
-        title: const Text(
-          "Francesco's Restaurant",
-          style: TextStyle(
-              fontWeight: FontWeight.w500,
-              color: Colors.white,
-              fontSize: 22
-          ),
-        ),
-        backgroundColor: Theme.of(context).colorScheme.primary,
-      ),
-      body: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage("assets/login2.jpg"),
-            fit: BoxFit.cover,
-          ),
-        ),
-        child: Container(
-          margin: EdgeInsets.symmetric(horizontal: 38, vertical: 80),
-          decoration: BoxDecoration(color: Colors.white.withOpacity(0.92), borderRadius: BorderRadius.circular(20)),
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(15),
-                child: Text(
-                  textAlign: TextAlign.center,
-                  "Registrati con la tua email",
-                  style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
-                ),
+    return GetBuilder<UserController>(
+      builder: (userController) {
+        return Scaffold(
+          // Aggiunto per evitare l'overflow della tastiera
+          resizeToAvoidBottomInset: false,
+          appBar: AppBar(
+            leading: BackButton(
+                color: Colors.white
+            ),
+            title: const Text(
+              "Francesco's Restaurant",
+              style: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  color: Colors.white,
+                  fontSize: 22
               ),
-              Form(
-                key: _signupFormKey,
-                child: Container(
-                    margin: EdgeInsets.symmetric(horizontal: 30),
-                    child: Column(
+            ),
+            backgroundColor: Theme.of(context).colorScheme.primary,
+          ),
+          body: Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage("assets/login2.jpg"),
+                fit: BoxFit.cover,
+              ),
+            ),
+            child: Container(
+              margin: EdgeInsets.only( left: 38, right: 38, bottom: 175, top: 65),
+              decoration: BoxDecoration(color: Colors.white.withOpacity(0.92), borderRadius: BorderRadius.circular(20)),
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(15),
+                    child: Text(
+                      textAlign: TextAlign.center,
+                      "Registrati con la tua email",
+                      style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  Form(
+                    key: _signupFormKey,
+                    child: Container(
+                      margin: EdgeInsets.symmetric(horizontal: 30),
+                      child: Column(
                         children: [
-                          TextFormField(
-                            controller: emailController,
-                            decoration: InputDecoration(
-                                labelText: "Nome",
-                                border: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    width: 10.0,
+                          Row(
+                            children: [
+                              Expanded(
+                                child: TextFormField(
+                                  controller: nome,
+                                  decoration: InputDecoration(
+                                    labelText: "Nome",
+                                    border: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        width: 10.0,
+                                      ),
+                                    ),
+                                    prefixIcon: Icon(Icons.account_circle_rounded),
                                   ),
                                 ),
-                                prefixIcon: Icon(Icons.account_circle_rounded)
+                              ),
+                              SizedBox(width: 10), // Spazio tra i campi "Nome" e "Cognome"
+                              Expanded(
+                                child: TextFormField(
+                                  controller: cognome,
+                                  decoration: InputDecoration(
+                                    labelText: "Cognome",
+                                    border: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        width: 10.0,
+                                      ),
+                                    ),
+                                    prefixIcon: Icon(Icons.account_circle_rounded),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: sizeBoxHeight),
+                          TextFormField(
+                            controller: telefono,
+                            decoration: InputDecoration(
+                              labelText: "Telefono",
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  width: 10.0,
+                                ),
+                              ),
+                              prefixIcon: Icon(Icons.add_call),
                             ),
                           ),
                           SizedBox(height: sizeBoxHeight),
                           TextFormField(
-                            controller: emailController,
+                            controller: regMailController,
                             decoration: InputDecoration(
-                                labelText: "Cognome",
-                                border: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    width: 10.0,
-                                  ),
+                              labelText: "Email",
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  width: 10.0,
                                 ),
-                                prefixIcon: Icon(Icons.account_circle_rounded)
+                              ),
+                              prefixIcon: Icon(Icons.email),
                             ),
                           ),
                           SizedBox(height: sizeBoxHeight),
                           TextFormField(
-                            controller: emailController,
+                            controller: regPasswordController,
                             decoration: InputDecoration(
-                                labelText: "Telefono",
-                                border: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    width: 10.0,
-                                  ),
-                                ),
-                                prefixIcon: Icon(Icons.add_call)
-                            ),
-                          ),
-                          SizedBox(height: sizeBoxHeight),
-                          TextFormField(
-                            controller: emailController,
-                            decoration: InputDecoration(
-                                labelText: "Email",
-                                border: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    width: 10.0,
-                                  ),
-                                ),
-                                prefixIcon: Icon(Icons.email)
-                            ),
-                          ),
-                          SizedBox(height: sizeBoxHeight),
-                          TextFormField(
-                            controller: passwordController,
-                            decoration:InputDecoration(
-                                labelText: "Password",
-                                border: OutlineInputBorder(),
-                                prefixIcon: Icon(Icons.password)
+                              labelText: "Password",
+                              border: OutlineInputBorder(),
+                              prefixIcon: Icon(Icons.password),
                             ),
                           ),
                           SizedBox(height: sizeBoxHeight),
                           ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                  padding: EdgeInsets.symmetric(vertical: 13, horizontal: 50),
-                                  elevation: 10,
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(0)
-                                  )
+                            style: ElevatedButton.styleFrom(
+                              padding: EdgeInsets.symmetric(vertical: 13, horizontal: 50),
+                              elevation: 10,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(0),
                               ),
-                              onPressed: () {
-                                Get.toNamed(Routes.SIGNUP);
-                              },
-                              child: Text(
-                                "REGISTRATI",
-                                style: TextStyle(fontSize: 18),
-                              )
+                            ),
+                            onPressed: () {
+                              userController.signUpWithCondition(
+                                  userController,
+                                  regMailController.text,
+                                  regPasswordController.text
+                              );
+                            },
+                            child: Text(
+                              "REGISTRATI",
+                              style: TextStyle(fontSize: 18),
+                            ),
                           ),
-                        ]
-                    )
-                ),
-              ),
+                        ],
+                      ),
+                    ),
+                  ),
 
-            ],
+                ],
+              ),
+            ),
           ),
-        ),
-      ),
+        );
+      }
     );
   }
 
-  void signUp() async {
 
-    String email = emailController.text;
-    String password = passwordController.text;
-
-    UserController login = Get.find<UserController>();
-
-    User? user = await login.signUp(email, password);
-
-    if (user != null) {
-      print("User successfuly created");
-      Get.back();
-    } else {
-      print("errore di registrazione, non andato");
-    }
-  }
 
 }

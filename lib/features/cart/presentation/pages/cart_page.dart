@@ -18,11 +18,10 @@ class CartPage extends StatelessWidget {
         title: Text('Carrello'),
       ),
       body: Obx(() {
-
         return ListView.builder(
-          itemCount: cartController.cartItems.length,
+          itemCount: cartController.getCartItems().length,
           itemBuilder: (context, index) {
-            CartItem cartItem = cartController.cartItems[index];
+            CartItem cartItem = cartController.getCartItems()[index];
             return ListTile(
               title: Text( cartItem.quantity.toString() + "x " + cartItem.dish.title),
               subtitle: Text('\$${cartItem.dish.price}'),

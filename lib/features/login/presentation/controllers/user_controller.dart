@@ -12,7 +12,18 @@ class UserController extends GetxController{
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
+  bool showPass = true;
+
   UserController(this.userRepository);
+
+  void setShowPass(bool pass) {
+    showPass = pass;
+    update();
+  }
+
+  bool getShowPass() {
+    return showPass;
+  }
 
   Future<User?> signUp(String email, String password) async{
 
@@ -26,12 +37,12 @@ class UserController extends GetxController{
 
   }
 
-  Future<void> loginWithCondition(UserController userController, String email, String password ) async {
+  Future<void> loginWithCondition(UserController userController, String email, String password) async {
 
     User? user = await userController.signIn(email, password);
 
     if(user == null){
-      print("errore");
+      print("Utente non esiste");
     }
     else{
       emailController.clear();
@@ -40,6 +51,26 @@ class UserController extends GetxController{
     }
 
   }
+
+  Future<void> signUpWithCondition(UserController userController, String email, String password) async {
+
+    User? user = await userController.signUp(email, password);
+
+    if (user == null) {
+      print("errore di registrazione, non andato");
+    } else {
+      print("User successfuly created");
+      Get.back();
+    }
+  }
+
+  void clearForm(UserController userController, GlobalKey<FormState> formKey) {
+    formKey.currentState!.reset();
+    userController.emailController.clear();
+    userController.passwordController.clear();
+  }
+
+
 
 
 }

@@ -18,9 +18,10 @@ class UserDatasource {
   Future<User?> signIn(String email, String password) async {
     try {
       UserCredential credential = await _auth.signInWithEmailAndPassword(email: email, password: password);
+
       return credential.user;
     } catch (e) {
-      print("Some error occured");
+      print("Some error occured" );
     }
     return null;
   }

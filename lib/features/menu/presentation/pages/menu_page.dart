@@ -63,6 +63,8 @@ class _MenuPageState extends State<MenuPage> {
             builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
 
               if (snapshot.hasData) {
+                
+                print(menuController.selectedCategory.value);
 
                 Map<String, int> categoriesCount = menuController.countCategories(snapshot.data!.docs);
 
@@ -128,7 +130,7 @@ class _MenuPageState extends State<MenuPage> {
                               Dish dish = dishItems[index];
 
                               return Container(
-                                  padding: EdgeInsets.all(8),
+                                  padding: EdgeInsets.all(6),
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(20),
                                       boxShadow: const [
@@ -152,6 +154,9 @@ class _MenuPageState extends State<MenuPage> {
                                               child: Image.network(
                                                 dish.pictureUrl,
                                                 height: 147,
+                                                errorBuilder: (context, error, stackTrace) {
+                                                  return CircularProgressIndicator(strokeWidth: 1);
+                                                },
                                               )),
                                           Text(
                                             dish.title,
@@ -187,24 +192,24 @@ class _MenuPageState extends State<MenuPage> {
                                                           color:
                                                           Colors.grey.shade600),
                                                     ),
+
                                                 ],
                                               ),
                                             ),
                                           ),
-                                          SizedBox(height: 16),
+                                          SizedBox(height: 21),
                                           Row(
                                             mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                             children: [
                                               SizedBox(width: 4),
                                               Text(
-                                                "\$" + dish.price.toString(),
+                                                "\$" + dish.price.toString() + "0",
                                                 style: TextStyle(
                                                     fontSize: 18,
                                                     fontWeight: FontWeight.bold,
                                                     color: Colors.green),
                                               ),
-                                              SizedBox(width: 4),
                                               IconButton(
                                                   onPressed: () {
                                                     cartController
@@ -213,7 +218,7 @@ class _MenuPageState extends State<MenuPage> {
                                                   icon: Icon(Icons.remove_circle)),
                                               Obx(
                                                     () => Text(
-                                                  cartController.quantity[index]
+                                                  cartController.getQuantity()[index]
                                                       .toString(),
                                                   style: TextStyle(fontSize: 18),
                                                 ),
@@ -230,7 +235,7 @@ class _MenuPageState extends State<MenuPage> {
                                           ElevatedButton(
                                               onPressed: () {
                                                 cartController.addToCart(dish,
-                                                    cartController.quantity[index]);
+                                                    cartController.getQuantity()[index]);
                                               },
                                               child: Text("Aggiungi")),
                                         ],
@@ -247,7 +252,8 @@ class _MenuPageState extends State<MenuPage> {
                 return Center(child: CircularProgressIndicator());
               }
             },
-          ));
+          )
+      );
     });
   }
 }
