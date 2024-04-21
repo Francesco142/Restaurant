@@ -39,7 +39,7 @@ class _LoginPageState extends State<LoginPage> {
             ),
             backgroundColor: Theme.of(context).colorScheme.primary,
             leading: Padding(
-              padding: const EdgeInsets.only(left: 10, bottom: 4),
+              padding: const EdgeInsets.only(left: 2, bottom: 4),
               child: Image.asset(
                 "assets/logo.png",
               ),
@@ -47,10 +47,10 @@ class _LoginPageState extends State<LoginPage> {
             actions: [
               IconButton(
                 // Al momento per skippare il login, poi la usero' per
-                // andare alla pagina amministratore per aggiungere piatti
+                // andare alla pagina menu per aggiungere piatti
                 onPressed: () {
                   userController.clearForm(userController, _loginFormKey);
-                  Get.toNamed(Routes.MENU);
+                  Get.toNamed(Routes.HOME);
                 } ,
                 icon: Icon(Icons.access_time_filled_outlined, size: 30, color: Colors.white,)
               ),
@@ -211,5 +211,6 @@ class _LoginPageState extends State<LoginPage> {
       }
     );
   }
+
 
 }

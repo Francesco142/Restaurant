@@ -18,15 +18,12 @@ class SignupPage extends StatefulWidget {
 
 class _SignupPageState extends State<SignupPage> {
 
-  final TextEditingController regMailController = TextEditingController();
-  final TextEditingController regPasswordController = TextEditingController();
-  final TextEditingController telefono = TextEditingController();
-  final TextEditingController nome = TextEditingController();
-  final TextEditingController cognome = TextEditingController();
 
   final _signupFormKey = GlobalKey<FormState>();
 
   double sizeBoxHeight = 20;
+
+  double sizeContainerTextField = 85;
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +34,11 @@ class _SignupPageState extends State<SignupPage> {
           resizeToAvoidBottomInset: false,
           appBar: AppBar(
             leading: BackButton(
-                color: Colors.white
+                color: Colors.white,
+                onPressed: () {
+                  userController.clearSignupForm(userController, _signupFormKey);
+                  Get.back();
+                },
             ),
             title: const Text(
               "Francesco's Restaurant",
@@ -57,7 +58,7 @@ class _SignupPageState extends State<SignupPage> {
               ),
             ),
             child: Container(
-              margin: EdgeInsets.only( left: 38, right: 38, bottom: 175, top: 65),
+              margin: EdgeInsets.only( left: 38, right: 38, bottom: 120, top: 40),
               decoration: BoxDecoration(color: Colors.white.withOpacity(0.92), borderRadius: BorderRadius.circular(20)),
               child: Column(
                 children: [
@@ -75,93 +76,152 @@ class _SignupPageState extends State<SignupPage> {
                       margin: EdgeInsets.symmetric(horizontal: 30),
                       child: Column(
                         children: [
-                          Row(
-                            children: [
-                              Expanded(
-                                child: TextFormField(
-                                  controller: nome,
-                                  decoration: InputDecoration(
-                                    labelText: "Nome",
-                                    border: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                        width: 10.0,
+                          Container(
+                            height: 80,
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: TextFormField(
+                                    controller: userController.nome,
+                                    decoration: InputDecoration(
+                                      labelText: "Nome",
+                                      border: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                          width: 10.0,
+                                        ),
                                       ),
+                                      prefixIcon: Icon(Icons.account_circle_rounded),
                                     ),
-                                    prefixIcon: Icon(Icons.account_circle_rounded),
+                                    validator: (value) {
+
+                                      if(value!.length < 3){
+                                          return "Non valido";
+                                      }
+                                      return null;
+
+                                    },
                                   ),
                                 ),
-                              ),
-                              SizedBox(width: 10), // Spazio tra i campi "Nome" e "Cognome"
-                              Expanded(
-                                child: TextFormField(
-                                  controller: cognome,
-                                  decoration: InputDecoration(
-                                    labelText: "Cognome",
-                                    border: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                        width: 10.0,
+                                SizedBox(width: 10), // Spazio tra i campi "Nome" e "Cognome"
+                                Expanded(
+                                  child: TextFormField(
+                                    controller: userController.cognome,
+                                    decoration: InputDecoration(
+                                      labelText: "Cognome",
+                                      border: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                          width: 10.0,
+                                        ),
                                       ),
+                                      prefixIcon: Icon(Icons.account_circle_rounded),
                                     ),
-                                    prefixIcon: Icon(Icons.account_circle_rounded),
+                                    validator: (value) {
+
+                                      if(value!.length < 3){
+                                        return "Non valido";
+                                      }
+                                      return null;
+
+                                    },
                                   ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                           SizedBox(height: sizeBoxHeight),
-                          TextFormField(
-                            controller: telefono,
-                            decoration: InputDecoration(
-                              labelText: "Telefono",
-                              border: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                  width: 10.0,
+                          Container(
+                            height: sizeContainerTextField,
+                            child: TextFormField(
+                              keyboardType: TextInputType.number,
+                              controller: userController.telefono,
+                              decoration: InputDecoration(
+                                labelText: "Telefono",
+                                border: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    width: 10.0,
+                                  ),
+                                ),
+                                prefixIcon: Icon(Icons.add_call),
+                              ),
+                              validator: (value) {
+
+                                if(value!.length < 3){
+                                  return "Non valido";
+                                }
+                                return null;
+
+                              },
+                            ),
+                          ),
+                          SizedBox(height: sizeBoxHeight),
+                          Container(
+                            height: sizeContainerTextField,
+                            child: TextFormField(
+                              controller: userController.regMailController,
+                              decoration: InputDecoration(
+                                labelText: "Email",
+                                border: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    width: 10.0,
+                                  ),
+                                ),
+                                prefixIcon: Icon(Icons.email),
+                              ),
+                              validator: (value) {
+                                // Almeno una maiuscola, una minuscola, @ e . in questo ordine
+                                RegExp regexEmailPattern = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+                                if(!(regexEmailPattern.hasMatch(value!))) {
+                                  return "Inserisci una email valida";
+                                }
+                                return null;
+                              },
+                            ),
+                          ),
+                          SizedBox(height: sizeBoxHeight),
+                          Container(
+                            height: sizeContainerTextField,
+                            child: TextFormField(
+                              controller: userController.regPasswordController,
+                              decoration: InputDecoration(
+                                labelText: "Password",
+                                border: OutlineInputBorder(),
+                                prefixIcon: Icon(Icons.password),
+                              ),
+                              validator: (value) {
+                                // Almeno una maiuscola, una minuscola, un numero
+                                RegExp regexPassPattern = RegExp(r'^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{5,}$');
+
+                                if (!(regexPassPattern.hasMatch(value!))) {
+                                  return "Almeno una maiuscola, minuscola, numero";
+                                }
+                                return null;
+                              },
+                            ),
+                          ),
+                          SizedBox(height: sizeBoxHeight),
+                          Container(
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                padding: EdgeInsets.symmetric(vertical: 20 ,horizontal: 50),
+                                elevation: 10,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(0),
                                 ),
                               ),
-                              prefixIcon: Icon(Icons.add_call),
-                            ),
-                          ),
-                          SizedBox(height: sizeBoxHeight),
-                          TextFormField(
-                            controller: regMailController,
-                            decoration: InputDecoration(
-                              labelText: "Email",
-                              border: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                  width: 10.0,
-                                ),
+                              onPressed: () {
+
+                                if(_signupFormKey.currentState!.validate()){
+                                  userController.signUpWithCondition(
+                                      userController,
+                                      userController.regMailController.text,
+                                      userController.regPasswordController.text,
+                                  );
+                                }
+                              },
+                              child: Text(
+                                "REGISTRATI",
+                                style: TextStyle(fontSize: 18),
                               ),
-                              prefixIcon: Icon(Icons.email),
-                            ),
-                          ),
-                          SizedBox(height: sizeBoxHeight),
-                          TextFormField(
-                            controller: regPasswordController,
-                            decoration: InputDecoration(
-                              labelText: "Password",
-                              border: OutlineInputBorder(),
-                              prefixIcon: Icon(Icons.password),
-                            ),
-                          ),
-                          SizedBox(height: sizeBoxHeight),
-                          ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              padding: EdgeInsets.symmetric(vertical: 13, horizontal: 50),
-                              elevation: 10,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(0),
-                              ),
-                            ),
-                            onPressed: () {
-                              userController.signUpWithCondition(
-                                  userController,
-                                  regMailController.text,
-                                  regPasswordController.text
-                              );
-                            },
-                            child: Text(
-                              "REGISTRATI",
-                              style: TextStyle(fontSize: 18),
                             ),
                           ),
                         ],
@@ -177,7 +237,6 @@ class _SignupPageState extends State<SignupPage> {
       }
     );
   }
-
 
 
 }

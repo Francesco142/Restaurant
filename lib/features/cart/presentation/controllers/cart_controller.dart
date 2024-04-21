@@ -27,9 +27,7 @@ class CartController extends GetxController {
   }
 
   void initializeQuantity(List<Dish> dishItems) {
-
     cartRepo.initializeQuantity(dishItems);
-
   }
 
   void decreaseQuantity(int index) {
@@ -41,7 +39,6 @@ class CartController extends GetxController {
   }
 
   void addToCart(Dish dish, int quantity) {
-
     cartRepo.addToCart(dish, quantity);
 
   }

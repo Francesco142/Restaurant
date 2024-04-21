@@ -12,6 +12,12 @@ class UserController extends GetxController{
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
+  final TextEditingController regMailController = TextEditingController();
+  final TextEditingController regPasswordController = TextEditingController();
+  final TextEditingController telefono = TextEditingController();
+  final TextEditingController nome = TextEditingController();
+  final TextEditingController cognome = TextEditingController();
+
   bool showPass = true;
 
   UserController(this.userRepository);
@@ -47,7 +53,7 @@ class UserController extends GetxController{
     else{
       emailController.clear();
       passwordController.clear();
-      Get.toNamed(Routes.MENU);
+      Get.toNamed(Routes.HOME);
     }
 
   }
@@ -60,7 +66,9 @@ class UserController extends GetxController{
       print("errore di registrazione, non andato");
     } else {
       print("User successfuly created");
-      Get.back();
+      userController.emailController.clear();
+      userController.passwordController.clear();
+      // Get.toNamed(Routes.LOGIN);
     }
   }
 
@@ -68,6 +76,16 @@ class UserController extends GetxController{
     formKey.currentState!.reset();
     userController.emailController.clear();
     userController.passwordController.clear();
+  }
+
+
+  void clearSignupForm(UserController userController, GlobalKey<FormState> formKey) {
+    formKey.currentState!.reset();
+    userController.regMailController.clear();
+    userController.regPasswordController.clear();
+    userController.telefono.clear();
+    userController.nome.clear();
+    userController.cognome.clear();
   }
 
 

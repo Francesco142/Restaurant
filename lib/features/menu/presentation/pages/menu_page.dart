@@ -1,3 +1,6 @@
+import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+import 'package:get/state_manager.dart';
 import 'package:ordini_ristorante/features/login/presentation/pages/login_page.dart';
 import 'package:ordini_ristorante/features/menu/presentation/controllers/menu_restaurant_controller.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -5,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ordini_ristorante/features/cart/presentation/controllers/cart_controller.dart';
 import 'package:ordini_ristorante/features/menu/data/models/dish.dart';
+import 'package:ordini_ristorante/routes/routes.dart';
 
 class MenuPage extends StatefulWidget {
   const MenuPage({super.key});
@@ -14,7 +18,7 @@ class MenuPage extends StatefulWidget {
 }
 
 class _MenuPageState extends State<MenuPage> {
-  
+
   final CartController cartController = Get.find<CartController>();
 
   @override
@@ -44,12 +48,12 @@ class _MenuPageState extends State<MenuPage> {
               IconButton(
                 icon: Icon(Icons.add_shopping_cart, color: Colors.white),
                 onPressed: () {
-                  Get.toNamed("/cart");
+                  Get.toNamed(Routes.CART);
                 },
               ),
               IconButton(
                 icon: Icon(
-                  Icons.logout,
+                  Icons.home,
                   color: Colors.white,
                 ),
                 onPressed: () {
@@ -63,7 +67,7 @@ class _MenuPageState extends State<MenuPage> {
             builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
 
               if (snapshot.hasData) {
-                
+
                 print(menuController.selectedCategory.value);
 
                 Map<String, int> categoriesCount = menuController.countCategories(snapshot.data!.docs);
@@ -216,13 +220,12 @@ class _MenuPageState extends State<MenuPage> {
                                                         .decreaseQuantity(index);
                                                   },
                                                   icon: Icon(Icons.remove_circle)),
-                                              Obx(
-                                                    () => Text(
-                                                  cartController.getQuantity()[index]
-                                                      .toString(),
-                                                  style: TextStyle(fontSize: 18),
-                                                ),
-                                              ),
+                                               Obx(() =>
+                                                   Text(
+                                                 cartController.getQuantity()[index].toString(),
+                                                 style: TextStyle(fontSize: 18),
+                                               ),
+                                             ),
                                               IconButton(
                                                   onPressed: () {
                                                     cartController
