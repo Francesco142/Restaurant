@@ -84,10 +84,15 @@ class CartRepoImpl extends CartRepo {
     }
   }
 
+  @override
   void removeFromCart(CartItem cartItem) {
     _cartItems.remove(cartItem);
   }
 
+  @override
+  void removeAllFromCart() {
+    _cartItems.clear();
+  }
 
 
 }

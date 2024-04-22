@@ -1,12 +1,13 @@
 
 import 'dart:ffi';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ordini_ristorante/features/login/data/repositiories_impl/user_repo_impl.dart';
+import 'package:ordini_ristorante/utils/firestore_helper.dart';
 
-import '../../../../routes/routes.dart';
 import '../controllers/user_controller.dart';
 
 class SignupPage extends StatefulWidget {
@@ -20,6 +21,8 @@ class _SignupPageState extends State<SignupPage> {
 
 
   final _signupFormKey = GlobalKey<FormState>();
+
+  FirestoreHelper firestoreHelper = FirestoreHelper();
 
   double sizeBoxHeight = 20;
 
@@ -58,7 +61,7 @@ class _SignupPageState extends State<SignupPage> {
               ),
             ),
             child: Container(
-              margin: EdgeInsets.only( left: 38, right: 38, bottom: 120, top: 40),
+              margin: EdgeInsets.only(left: 38, right: 38, bottom: 120, top: 35),
               decoration: BoxDecoration(color: Colors.white.withOpacity(0.92), borderRadius: BorderRadius.circular(20)),
               child: Column(
                 children: [
@@ -208,15 +211,56 @@ class _SignupPageState extends State<SignupPage> {
                                   borderRadius: BorderRadius.circular(0),
                                 ),
                               ),
-                              onPressed: () {
+                              onPressed: () async {
 
-                                if(_signupFormKey.currentState!.validate()){
-                                  userController.signUpWithCondition(
+                                Map<String, dynamic> userData = {
+                                  'nome': userController.nome.text,
+                                  'cognome': userController.cognome.text,
+                                  'telefono': userController.telefono.text,
+                                  'email': userController.regMailController.text,
+                                  'password': userController.regPasswordController.text,
+                                };
+
+                                print(await firestoreHelper.isUserExists(userData['email']));
+
+                                bool userExists = await firestoreHelper.isUserExists(userData['email']);
+
+                                if(userExists){
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      padding: EdgeInsets.all(35),
+                                      content: Text(userData['email'] + " esiste gia ", style: TextStyle(fontSize: 18),),
+                                      duration: Duration(seconds: 3), // Durata del messaggio
+                                    ),
+                                  );
+
+                                }
+                                else{
+
+                                  if(_signupFormKey.currentState!.validate()){
+                                    userController.signUpWithCondition(
                                       userController,
                                       userController.regMailController.text,
                                       userController.regPasswordController.text,
-                                  );
+                                    );
+
+                                    firestoreHelper.createOrUpdate("users", userController.regMailController.text, userData);
+                                    userController.clearSignupForm(userController, _signupFormKey);
+
+                                    //Snackbar
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        padding: EdgeInsets.all(25),
+                                        content: Text('Utente registrato con successo!', style: TextStyle(fontSize: 18),),
+                                        duration: Duration(seconds: 3), // Durata del messaggio
+                                      ),
+                                    );
+
                                 }
+
+
+                                }
+
                               },
                               child: Text(
                                 "REGISTRATI",

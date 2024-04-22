@@ -24,4 +24,6 @@ abstract class CartRepo {
 
   void removeFromCart(CartItem cartItem);
 
+  void removeAllFromCart();
+
 }

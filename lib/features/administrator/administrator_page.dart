@@ -24,9 +24,12 @@ class _AdministratorPageState extends State<AdministratorPage> {
       ),
       body: Center(
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
             ElevatedButton(
                 onPressed: () async{
+
+                  // DEVO PRIMA AGGIUNGERE LE IMMAGINI SULLO STORE
 
                   mock.dishesData.forEach((key, value)  {
 
@@ -38,6 +41,7 @@ class _AdministratorPageState extends State<AdministratorPage> {
                 },
                 child: Text("Aggiungi tutti i piatti su Firease")
             ),
+            SizedBox(height: 30),
             ElevatedButton(
                 onPressed: ()  {
 

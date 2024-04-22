@@ -4,6 +4,11 @@ import 'package:get/get.dart';
 import 'package:get/get.dart';
 import 'package:ordini_ristorante/routes/routes.dart';
 
+import '../../../cart/data/repositiories_impl/cart_repo_impl.dart';
+import '../../../cart/presentation/controllers/cart_controller.dart';
+
+
+
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -13,7 +18,9 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
 
-  int selectedIndex = 0;
+  // non utilizzo l'istanza ma mi permette di mantenere la peristenza del carrello fra le varie schermate
+  final CartController _cartController = Get.put(CartController(CartRepoImpl()));
+
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +32,7 @@ class _HomePageState extends State<HomePage> {
             "assets/logo.png",
           ),
         ),
-        toolbarHeight: 70,
+        toolbarHeight: 75,
         title: Text(
           "Francesco's Restaurant",
           style: TextStyle(
@@ -37,32 +44,34 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Theme.of(context).colorScheme.primary,
         actions: [
           IconButton(
-            padding: EdgeInsets.all(15),
-            iconSize: 40.0,
+            iconSize: 30.0,
             icon: Icon(Icons.account_circle, color: Colors.white),
             onPressed: () {
-              // Get.toNamed("");
+              Get.toNamed(Routes.USER);
             },
           ),
           IconButton(
-            padding: EdgeInsets.all(15),
-            iconSize: 40.0,
+            iconSize: 30.0,
             icon: Icon(Icons.logout, color: Colors.white),
             onPressed: () {
-              Get.back();
+              Get.offNamed(Routes.LOGIN);
             },
           ),
         ],
       ),
-      body: Column(
-        children: [
-
-        ],
+      body: Container(
+        decoration: BoxDecoration(
+              image: DecorationImage(
+              image: AssetImage("assets/menu.png"),
+              fit: BoxFit.cover,
+            ),
+        ),
       ),
       bottomNavigationBar: BottomNavigationBar(
-          selectedItemColor: Colors.black,
-          unselectedItemColor: Colors.black,
-          backgroundColor: Colors.amber,
+          iconSize: 55,
+          selectedItemColor: Colors.white,
+          unselectedItemColor: Colors.white,
+          backgroundColor: Theme.of(context).primaryColor,
           onTap: (value) {
             value == 0 ? Get.toNamed(Routes.MENU) : Get.toNamed(Routes.CART);
           },

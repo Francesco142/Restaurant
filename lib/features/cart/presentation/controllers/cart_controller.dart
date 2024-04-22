@@ -47,4 +47,18 @@ class CartController extends GetxController {
     cartRepo.removeFromCart(cartItem);
   }
 
+  void removeAllFromCart() {
+    cartRepo.removeAllFromCart();
+  }
+
+
+  double getTotalAmount() {
+    double total = 0;
+    final cartItems = getCartItems();
+    for (var cartItem in cartItems) {
+      total = total + (cartItem.dish.price * cartItem.quantity);
+    }
+    return total;
+  }
+
 }

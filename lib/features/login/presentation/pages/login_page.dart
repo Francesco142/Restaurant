@@ -29,6 +29,7 @@ class _LoginPageState extends State<LoginPage> {
           // Aggiunto per evitare l'overflow della tastiera
           resizeToAvoidBottomInset: false,
           appBar: AppBar(
+            toolbarHeight: 75,
             title: const Text(
               "Francesco's Restaurant",
               style: TextStyle(
@@ -39,7 +40,7 @@ class _LoginPageState extends State<LoginPage> {
             ),
             backgroundColor: Theme.of(context).colorScheme.primary,
             leading: Padding(
-              padding: const EdgeInsets.only(left: 2, bottom: 4),
+              padding: const EdgeInsets.only(left: 6, bottom: 8),
               child: Image.asset(
                 "assets/logo.png",
               ),
@@ -52,7 +53,8 @@ class _LoginPageState extends State<LoginPage> {
                   userController.clearForm(userController, _loginFormKey);
                   Get.toNamed(Routes.HOME);
                 } ,
-                icon: Icon(Icons.access_time_filled_outlined, size: 30, color: Colors.white,)
+                icon: Icon(Icons.access_time_filled_outlined,color: Colors.white,),
+                iconSize: 30,
               ),
               IconButton(
                 // Al momento per skippare il login, poi la usero' per
@@ -61,7 +63,8 @@ class _LoginPageState extends State<LoginPage> {
                     userController.clearForm(userController, _loginFormKey);
                     Get.to(AdministratorPage());
                   },
-                  icon: Icon(Icons.key_rounded, size: 30, color: Colors.white)
+                  icon: Icon(Icons.key_rounded, color: Colors.white),
+                iconSize: 30,
               ),
             ],
           ),
@@ -167,11 +170,12 @@ class _LoginPageState extends State<LoginPage> {
 
                               if(_loginFormKey.currentState!.validate()){
 
-                                await userController.loginWithCondition(
+                               await userController.loginWithCondition(
                                     userController,
                                     userController.emailController.text,
                                     userController.passwordController.text
                                 );
+
                               }
 
                             },

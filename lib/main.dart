@@ -9,6 +9,7 @@ void main() async {
 
   WidgetsFlutterBinding.ensureInitialized();
 
+
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -26,7 +27,15 @@ class MyApp extends StatelessWidget {
       getPages: AppPages.routes,
       title: 'Flutter Demo',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.black ),
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Color.fromRGBO(250, 112, 112, 1),
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all<Color>(Color.fromRGBO(250, 253, 237, 1)),
+            ),
+        ),
+        primaryIconTheme: IconThemeData(color: Colors.black),
         useMaterial3: true,
       ),
     );

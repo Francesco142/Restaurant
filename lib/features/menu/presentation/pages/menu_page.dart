@@ -28,7 +28,7 @@ class _MenuPageState extends State<MenuPage> {
       return Scaffold(
           backgroundColor: Colors.grey.shade300,
           appBar: AppBar(
-            toolbarHeight: 70,
+            toolbarHeight: 75,
             title: const Text(
               "Francesco's Restaurant",
               style: TextStyle(
@@ -39,19 +39,21 @@ class _MenuPageState extends State<MenuPage> {
             ),
             backgroundColor: Theme.of(context).colorScheme.primary,
             leading: Padding(
-              padding: const EdgeInsets.only(left: 6, bottom: 6),
+              padding: EdgeInsets.only(left: 6, bottom: 8),
               child: menuController.logoUrl.isEmpty
                   ? SizedBox(width: 20)
                   : Image.network(menuController.logoUrl),
             ),
             actions: [
               IconButton(
+                iconSize: 30.0,
                 icon: Icon(Icons.add_shopping_cart, color: Colors.white),
                 onPressed: () {
                   Get.toNamed(Routes.CART);
                 },
               ),
               IconButton(
+                iconSize: 30.0,
                 icon: Icon(
                   Icons.home,
                   color: Colors.white,
@@ -208,7 +210,7 @@ class _MenuPageState extends State<MenuPage> {
                                             children: [
                                               SizedBox(width: 4),
                                               Text(
-                                                "\$" + dish.price.toString() + "0",
+                                                "\$" + dish.price.toStringAsFixed(2),
                                                 style: TextStyle(
                                                     fontSize: 18,
                                                     fontWeight: FontWeight.bold,

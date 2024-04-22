@@ -4,6 +4,7 @@ import 'package:ordini_ristorante/features/login/presentation/pages/login_page.d
 import 'package:ordini_ristorante/features/login/presentation/pages/signup_page.dart';
 import 'package:ordini_ristorante/features/menu/bindings/menu_binding.dart';
 import 'package:ordini_ristorante/features/menu/presentation/pages/menu_page.dart';
+import 'package:ordini_ristorante/features/user/presentations/pages/user_page.dart';
 import 'package:ordini_ristorante/routes/routes.dart';
 
 import '../features/cart/bindings/cart_binding.dart';
@@ -17,6 +18,11 @@ class AppPages{
       name: Routes.LOGIN,
       page: () => const LoginPage(),
       binding: UserBinding()
+    ),
+    GetPage(
+        name: Routes.CART,
+        page: () => const CartPage(),
+        binding: CartBinding()
     ),
     GetPage(
       name: Routes.SIGNUP,
@@ -34,9 +40,10 @@ class AppPages{
       binding: MenuRestaurantBinding()
     ),
     GetPage(
-      name: Routes.CART,
-      page: () => const CartPage(),
-      binding: CartBinding()
+        name: Routes.USER,
+        page: () => const UserPage(),
+        // binding: MenuRestaurantBinding()
     ),
+
   ];
 }
