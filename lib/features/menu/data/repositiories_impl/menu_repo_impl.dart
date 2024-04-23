@@ -38,11 +38,13 @@ class MenuRepositoryImpl extends MenuRepository{
   // Passo la categoria nell'indice in quel momento
   @override
   List<Dish> dishFilterItems(AsyncSnapshot<QuerySnapshot> snapshot, String selectedCategory) {
+
     return snapshot.data!.docs
         .map((DocumentSnapshot document) =>
         Dish.fromSnapshot(document))
         .where((dish) => dish.category == selectedCategory)
         .toList();
+
   }
 
   // Filtro categoria senza funzionale

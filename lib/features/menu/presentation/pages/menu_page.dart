@@ -1,3 +1,6 @@
+import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+import 'package:get/state_manager.dart';
 import 'package:ordini_ristorante/features/login/presentation/pages/login_page.dart';
 import 'package:ordini_ristorante/features/menu/presentation/controllers/menu_restaurant_controller.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -5,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ordini_ristorante/features/cart/presentation/controllers/cart_controller.dart';
 import 'package:ordini_ristorante/features/menu/data/models/dish.dart';
+import 'package:ordini_ristorante/routes/routes.dart';
 
 class MenuPage extends StatefulWidget {
   const MenuPage({super.key});
@@ -14,7 +18,7 @@ class MenuPage extends StatefulWidget {
 }
 
 class _MenuPageState extends State<MenuPage> {
-  
+
   final CartController cartController = Get.find<CartController>();
 
   @override
@@ -24,7 +28,7 @@ class _MenuPageState extends State<MenuPage> {
       return Scaffold(
           backgroundColor: Colors.grey.shade300,
           appBar: AppBar(
-            toolbarHeight: 70,
+            toolbarHeight: 75,
             title: const Text(
               "Francesco's Restaurant",
               style: TextStyle(
@@ -35,21 +39,23 @@ class _MenuPageState extends State<MenuPage> {
             ),
             backgroundColor: Theme.of(context).colorScheme.primary,
             leading: Padding(
-              padding: const EdgeInsets.only(left: 6, bottom: 6),
+              padding: EdgeInsets.only(left: 6, bottom: 8),
               child: menuController.logoUrl.isEmpty
                   ? SizedBox(width: 20)
                   : Image.network(menuController.logoUrl),
             ),
             actions: [
               IconButton(
+                iconSize: 30.0,
                 icon: Icon(Icons.add_shopping_cart, color: Colors.white),
                 onPressed: () {
-                  Get.toNamed("/cart");
+                  Get.toNamed(Routes.CART);
                 },
               ),
               IconButton(
+                iconSize: 30.0,
                 icon: Icon(
-                  Icons.logout,
+                  Icons.home,
                   color: Colors.white,
                 ),
                 onPressed: () {
@@ -63,6 +69,8 @@ class _MenuPageState extends State<MenuPage> {
             builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
 
               if (snapshot.hasData) {
+
+                print(menuController.selectedCategory.value);
 
                 Map<String, int> categoriesCount = menuController.countCategories(snapshot.data!.docs);
 
@@ -120,15 +128,15 @@ class _MenuPageState extends State<MenuPage> {
                             gridDelegate:
                             const SliverGridDelegateWithFixedCrossAxisCount(
                                 crossAxisCount: 2,
-                                crossAxisSpacing: 16,
+                                crossAxisSpacing: 12,
                                 mainAxisSpacing: 16,
-                                childAspectRatio: 9 / 21),
+                                childAspectRatio: 9 / 23),
                             itemBuilder: (BuildContext context, int index) {
 
                               Dish dish = dishItems[index];
 
                               return Container(
-                                  padding: EdgeInsets.all(8),
+                                  padding: EdgeInsets.all(6),
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(20),
                                       boxShadow: const [
@@ -139,103 +147,95 @@ class _MenuPageState extends State<MenuPage> {
                                       ],
                                       color: Colors.white
                                   ),
-                                  child: Material(
-                                    child: InkWell(
-                                      // onTap: () {
-                                      //   Get.to(LoginPage());
-                                      // },
-                                      borderRadius: BorderRadius.circular(20),
-                                      child: Column(
-                                        children: [
-                                          Container(
-                                              margin: EdgeInsets.all(10),
-                                              child: Image.network(
-                                                dish.pictureUrl,
-                                                height: 147,
-                                              )),
-                                          Text(
-                                            dish.title,
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              //Se il testo ha più di una riga va in overflow
-                                              fontSize: dish.title.length > 17
-                                                  ? 13.0
-                                                  : 22.0,
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: 8, right: 8, top: 8),
-                                            child: Container(
-                                              alignment: Alignment.center,
-                                              height: 71,
-                                              child: Wrap(
-                                                children: [
-                                                  for (int i = 0;
-                                                  i < dish.ingredients.length;
-                                                  i++)
-                                                    Text(
-                                                      dish.ingredients[i] + ", ",
-                                                      style: TextStyle(
-                                                          fontSize: dish.ingredients
-                                                              .join(', ')
-                                                              .length >
-                                                              50
-                                                              ? 11
-                                                              : 13,
-                                                          color:
-                                                          Colors.grey.shade600),
-                                                    ),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                          SizedBox(height: 16),
-                                          Row(
-                                            mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                          margin: EdgeInsets.all(10),
+                                          child: Image.network(
+                                            dish.pictureUrl,
+                                            height: 147,
+                                            errorBuilder: (context, error, stackTrace) {
+                                              return CircularProgressIndicator(strokeWidth: 2);
+                                            },
+                                          )),
+                                      Text(
+                                        dish.title,
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          //Se il testo ha più di una riga va in overflow
+                                          fontSize: dish.title.length > 17
+                                              ? 13.0
+                                              : 22.0,
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 8, right: 8, top: 14),
+                                        child: Container(
+                                          alignment: Alignment.center,
+                                          height: 71,
+                                          child: Wrap(
                                             children: [
-                                              SizedBox(width: 4),
-                                              Text(
-                                                "\$" + dish.price.toString(),
-                                                style: TextStyle(
-                                                    fontSize: 18,
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Colors.green),
-                                              ),
-                                              SizedBox(width: 4),
-                                              IconButton(
-                                                  onPressed: () {
-                                                    cartController
-                                                        .decreaseQuantity(index);
-                                                  },
-                                                  icon: Icon(Icons.remove_circle)),
-                                              Obx(
-                                                    () => Text(
-                                                  cartController.quantity[index]
-                                                      .toString(),
-                                                  style: TextStyle(fontSize: 18),
+                                              for (int i = 0;
+                                              i < dish.ingredients.length;
+                                              i++)
+                                                Text(
+                                                  dish.ingredients[i] + ", ",
+                                                  style: TextStyle(
+                                                      fontSize: dish.ingredients
+                                                          .join(', ')
+                                                          .length >
+                                                          90
+                                                          ? 11.5
+                                                          : 13,
+                                                      color:
+                                                      Colors.grey.shade600, fontWeight: FontWeight.w700),
                                                 ),
-                                              ),
-                                              IconButton(
-                                                  onPressed: () {
-                                                    cartController
-                                                        .increaseQuantity(index);
-                                                  },
-                                                  icon: Icon(Icons.add_circle)),
+
                                             ],
                                           ),
-                                          SizedBox(height: 4),
-                                          ElevatedButton(
+                                        ),
+                                      ),
+                                      SizedBox(height: 35),
+                                      Text(
+                                        "\$" + dish.price.toStringAsFixed(2),
+                                        style: TextStyle(
+                                            fontSize: 22,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.green),
+                                      ),
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                        children: [
+                                          IconButton(
                                               onPressed: () {
-                                                cartController.addToCart(dish,
-                                                    cartController.quantity[index]);
+                                                cartController
+                                                    .decreaseQuantity(index);
                                               },
-                                              child: Text("Aggiungi")),
+                                              icon: Icon(Icons.remove_circle)),
+                                           Obx(() =>
+                                               Text(
+                                             cartController.getQuantity()[index].toString(),
+                                             style: TextStyle(fontSize: 21),
+                                           ),
+                                         ),
+                                          IconButton(
+                                              onPressed: () {
+                                                cartController
+                                                    .increaseQuantity(index);
+                                              },
+                                              icon: Icon(Icons.add_circle)),
                                         ],
                                       ),
-                                    ),
+                                      SizedBox(height: 4),
+                                      ElevatedButton(
+                                          onPressed: () {
+                                            cartController.addToCart(dish,
+                                                cartController.getQuantity()[index]);
+                                          },
+                                          child: Text("Aggiungi")),
+                                    ],
                                   ),
                               );
                             }),
@@ -247,7 +247,8 @@ class _MenuPageState extends State<MenuPage> {
                 return Center(child: CircularProgressIndicator());
               }
             },
-          ));
+          )
+      );
     });
   }
 }
