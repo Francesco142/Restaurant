@@ -18,8 +18,6 @@ class CartPage extends StatelessWidget {
 
     final CartController cartController = Get.find<CartController>();
 
-    FirestoreHelper firestoreHelper = FirestoreHelper();
-
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 70,
@@ -110,39 +108,8 @@ class CartPage extends StatelessWidget {
                             SizedBox(width: 20),
                             ElevatedButton(
                                 onPressed: () {
-
-                                  User? user = FirebaseAuth.instance.currentUser;
-
-                                  // da genrare
-                                  String idOrdine = generateOrderName();
-
-                                  Map<String, dynamic> orderData = {
-                                    'listaPortate': cartController.getCartItems().map((cartItem) => cartItem.dish.title).toList(),
-                                    'totale': cartController.getTotalAmount(),
-                                    'email': user!.email,
-                                  };
-
-                                  print(orderData.toString());
-
-                                  if(orderData['listaPortate'].isNotEmpty){
-
-                                    // Post DB
-                                    firestoreHelper.createOrUpdate('cart', idOrdine, orderData);
-
-                                    // Rimozione piatti acquistati
-                                    cartController.removeAllFromCart();
-
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                        padding: EdgeInsets.all(25),
-                                        content: Text('Ordine andato a buon fine!'),
-                                        duration: Duration(seconds: 3), // Durata del messaggio
-                                      ),
-                                    );
-                                  }
-
-                                  // Uscire dal Dialog
-                                  Get.back();
+                                  // Creazione ordine firebase
+                                  cartController.createOrder();
                                 },
                                 child: Text("Si", style: TextStyle(color: Colors.white)),
                               style: ElevatedButton.styleFrom(
@@ -157,7 +124,6 @@ class CartPage extends StatelessWidget {
                           ]
                       );
                     },
-
                 ),
               ],
             ),
@@ -165,19 +131,6 @@ class CartPage extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  String generateOrderName() {
-    // Ottieni il timestamp corrente in millisecondi
-    int timestamp = DateTime.now().millisecondsSinceEpoch;
-
-    // Genera un numero casuale compreso tra 1000 e 9999
-    int random = Random().nextInt(9000) + 1000;
-
-    // Combina il timestamp e il numero casuale per creare un nome unico per l'ordine
-    String orderName = "ordine_$timestamp$random";
-
-    return orderName;
   }
 
 }

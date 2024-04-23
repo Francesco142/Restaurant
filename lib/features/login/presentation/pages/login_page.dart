@@ -1,12 +1,7 @@
-import 'dart:ui';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ordini_ristorante/features/administrator/administrator_page.dart';
 import 'package:ordini_ristorante/features/login/presentation/controllers/user_controller.dart';
-import 'package:ordini_ristorante/features/administrator/datas.dart';
-import 'package:ordini_ristorante/utils/firestore_helper.dart';
 
 import '../../../../routes/routes.dart';
 
@@ -41,14 +36,14 @@ class _LoginPageState extends State<LoginPage> {
             backgroundColor: Theme.of(context).colorScheme.primary,
             leading: Padding(
               padding: const EdgeInsets.only(left: 6, bottom: 8),
-              child: Image.asset(
-                "assets/logo.png",
-              ),
+              child: userController.logoUrl.isEmpty
+                  ? SizedBox(width: 20)
+                  : Image.network(userController.logoUrl),
             ),
+            // Icone aggiunte per comodità, non fanno parte dell'app
             actions: [
               IconButton(
-                // Al momento per skippare il login, poi la usero' per
-                // andare alla pagina menu per aggiungere piatti
+                // Icona per skippare il login
                 onPressed: () {
                   userController.clearForm(userController, _loginFormKey);
                   Get.toNamed(Routes.HOME);
@@ -57,11 +52,10 @@ class _LoginPageState extends State<LoginPage> {
                 iconSize: 30,
               ),
               IconButton(
-                // Al momento per skippare il login, poi la usero' per
-                // andare alla pagina amministratore per aggiungere piatti
+                 // Icona per andare alla pagina amministratore
                   onPressed: () {
                     userController.clearForm(userController, _loginFormKey);
-                    Get.to(AdministratorPage());
+                    Get.toNamed(Routes.ADMINISTRATOR);
                   },
                   icon: Icon(Icons.key_rounded, color: Colors.white),
                 iconSize: 30,
@@ -108,17 +102,10 @@ class _LoginPageState extends State<LoginPage> {
                                   prefixIcon: Icon(Icons.email)
                               ),
                               validator: (value) {
-
-                                // Almeno una maiuscola, una minuscola, @ e . in questo ordine
-                                RegExp regexEmailPattern = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
-
-
-                                if(!(regexEmailPattern.hasMatch(value!))) {
+                                if(!(userController.regexEmailPattern.hasMatch(value!))) {
                                   return "Inserisci una email valida";
                                 }
-
                                 return null;
-
                               },
                             ),
                           SizedBox(height: 28),
@@ -137,11 +124,7 @@ class _LoginPageState extends State<LoginPage> {
                                 ),
                                 obscureText: userController.getShowPass(),
                                 validator: (value) {
-
-                                  // Almeno una maiuscola, una minuscola, un numero
-                                  RegExp regexPassPattern = RegExp(r'^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{5,}$');
-
-                                  if (!(regexPassPattern.hasMatch(value!))) {
+                                  if (!(userController.regexPassPattern.hasMatch(value!))) {
                                     return "Inserisci una password valida";
                                   }
                                   return null;
@@ -167,17 +150,13 @@ class _LoginPageState extends State<LoginPage> {
                                 )
                             ),
                             onPressed: () async {
-
                               if(_loginFormKey.currentState!.validate()){
-
                                await userController.loginWithCondition(
                                     userController,
                                     userController.emailController.text,
                                     userController.passwordController.text
                                 );
-
                               }
-
                             },
                             child: Text(
                               "ACCEDI",
@@ -215,6 +194,4 @@ class _LoginPageState extends State<LoginPage> {
       }
     );
   }
-
-
 }

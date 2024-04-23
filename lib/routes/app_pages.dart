@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:ordini_ristorante/features/administrator/presentations/pages/administrator_page.dart';
 import 'package:ordini_ristorante/features/cart/presentation/pages/cart_page.dart';
 import 'package:ordini_ristorante/features/login/presentation/pages/login_page.dart';
 import 'package:ordini_ristorante/features/login/presentation/pages/signup_page.dart';
@@ -43,6 +44,10 @@ class AppPages{
         name: Routes.USER,
         page: () => const UserPage(),
         // binding: MenuRestaurantBinding()
+    ),
+    GetPage(
+        name: Routes.ADMINISTRATOR,
+        page: () => const AdministratorPage(),
     ),
 
   ];

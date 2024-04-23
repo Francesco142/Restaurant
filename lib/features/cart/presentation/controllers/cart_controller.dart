@@ -1,12 +1,19 @@
+import 'dart:math';
+
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ordini_ristorante/features/cart/domain/repositories/cart_repo.dart';
 
+import '../../../../utils/firestore_helper.dart';
 import '../../data/models/cart_item.dart';
 import '../../../menu/data/models/dish.dart';
 
 class CartController extends GetxController {
 
   final CartRepo cartRepo;
+
+  final FirestoreHelper firestoreHelper = FirestoreHelper();
 
   CartController(this.cartRepo);
 
@@ -61,4 +68,48 @@ class CartController extends GetxController {
     return total;
   }
 
+  void createOrder() {
+    User? user = FirebaseAuth.instance.currentUser;
+    String idOrdine = generateOrderName();
+    Map<String, dynamic> orderData = {
+      'listaPortate': getCartItems().map((cartItem) => (cartItem.quantity.toString() + "x " + cartItem.dish.title)).toList(),
+      'totale': getTotalAmount(),
+      'email': user!.email,
+    };
+
+    print(orderData.toString());
+
+    if (orderData['listaPortate'].isNotEmpty) {
+      // Post DB
+      firestoreHelper.createOrUpdate('cart', idOrdine, orderData);
+
+
+    }
+
+    // Uscire dal Dialog
+    Get.back();
+    // Show success message
+
+    if(getCartItems().isNotEmpty){
+      Get.snackbar(
+        backgroundColor: Colors.lightGreen,
+        colorText: Colors.black,
+        'Ordine completato',
+        'Ordine andato a buon fine!',
+        duration: Duration(seconds: 2),
+      );
+    }
+    // Rimozione piatti acquistati
+    removeAllFromCart();
+
+  }
+
+  String generateOrderName() {
+    int timestamp = DateTime.now().millisecondsSinceEpoch;
+    int random = Random().nextInt(9000) + 1000;
+    return "ordine_$timestamp$random";
+  }
+
 }
+
+

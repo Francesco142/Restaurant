@@ -1,12 +1,8 @@
 
-import 'dart:ffi';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:ordini_ristorante/features/login/data/repositiories_impl/user_repo_impl.dart';
-import 'package:ordini_ristorante/utils/firestore_helper.dart';
 
 import '../controllers/user_controller.dart';
 
@@ -19,14 +15,7 @@ class SignupPage extends StatefulWidget {
 
 class _SignupPageState extends State<SignupPage> {
 
-
   final _signupFormKey = GlobalKey<FormState>();
-
-  FirestoreHelper firestoreHelper = FirestoreHelper();
-
-  double sizeBoxHeight = 20;
-
-  double sizeContainerTextField = 85;
 
   @override
   Widget build(BuildContext context) {
@@ -79,18 +68,19 @@ class _SignupPageState extends State<SignupPage> {
                       margin: EdgeInsets.symmetric(horizontal: 30),
                       child: Column(
                         children: [
-                          Container(
-                            height: 80,
+                          SizedBox(
                             child: Row(
                               children: [
-                                Expanded(
+                                Container(
+                                  height: 100,
+                                  width: 132,
                                   child: TextFormField(
                                     controller: userController.nome,
                                     decoration: InputDecoration(
                                       labelText: "Nome",
                                       border: OutlineInputBorder(
                                         borderSide: BorderSide(
-                                          width: 10.0,
+                                          width: 50.0,
                                         ),
                                       ),
                                       prefixIcon: Icon(Icons.account_circle_rounded),
@@ -101,12 +91,13 @@ class _SignupPageState extends State<SignupPage> {
                                           return "Non valido";
                                       }
                                       return null;
-
                                     },
                                   ),
                                 ),
                                 SizedBox(width: 10), // Spazio tra i campi "Nome" e "Cognome"
-                                Expanded(
+                                Container(
+                                  height: 100,
+                                  width: 132,
                                   child: TextFormField(
                                     controller: userController.cognome,
                                     decoration: InputDecoration(
@@ -131,9 +122,9 @@ class _SignupPageState extends State<SignupPage> {
                               ],
                             ),
                           ),
-                          SizedBox(height: sizeBoxHeight),
+
                           Container(
-                            height: sizeContainerTextField,
+                            height: userController.sizeContainerTextField,
                             child: TextFormField(
                               keyboardType: TextInputType.number,
                               controller: userController.telefono,
@@ -156,9 +147,9 @@ class _SignupPageState extends State<SignupPage> {
                               },
                             ),
                           ),
-                          SizedBox(height: sizeBoxHeight),
+                          SizedBox(height: userController.sizeBoxHeight),
                           Container(
-                            height: sizeContainerTextField,
+                            height: userController.sizeContainerTextField,
                             child: TextFormField(
                               controller: userController.regMailController,
                               decoration: InputDecoration(
@@ -172,17 +163,16 @@ class _SignupPageState extends State<SignupPage> {
                               ),
                               validator: (value) {
                                 // Almeno una maiuscola, una minuscola, @ e . in questo ordine
-                                RegExp regexEmailPattern = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
-                                if(!(regexEmailPattern.hasMatch(value!))) {
+                                if(!(userController.regexEmailPattern.hasMatch(value!))) {
                                   return "Inserisci una email valida";
                                 }
                                 return null;
                               },
                             ),
                           ),
-                          SizedBox(height: sizeBoxHeight),
+                          SizedBox(height: userController.sizeBoxHeight),
                           Container(
-                            height: sizeContainerTextField,
+                            height: userController.sizeContainerTextField,
                             child: TextFormField(
                               controller: userController.regPasswordController,
                               decoration: InputDecoration(
@@ -192,16 +182,14 @@ class _SignupPageState extends State<SignupPage> {
                               ),
                               validator: (value) {
                                 // Almeno una maiuscola, una minuscola, un numero
-                                RegExp regexPassPattern = RegExp(r'^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{5,}$');
-
-                                if (!(regexPassPattern.hasMatch(value!))) {
+                                if (!(userController.regexPassPattern.hasMatch(value!))) {
                                   return "Almeno una maiuscola, minuscola, numero";
                                 }
                                 return null;
                               },
                             ),
                           ),
-                          SizedBox(height: sizeBoxHeight),
+                          SizedBox(height: userController.sizeBoxHeight),
                           Container(
                             child: ElevatedButton(
                               style: ElevatedButton.styleFrom(
@@ -212,55 +200,16 @@ class _SignupPageState extends State<SignupPage> {
                                 ),
                               ),
                               onPressed: () async {
+                                  Map<String, dynamic> userData = {
+                                    'nome': userController.nome.text,
+                                    'cognome': userController.cognome.text,
+                                    'telefono': userController.telefono.text,
+                                    'email': userController.regMailController.text,
+                                    'password': userController.regPasswordController.text,
+                                  };
 
-                                Map<String, dynamic> userData = {
-                                  'nome': userController.nome.text,
-                                  'cognome': userController.cognome.text,
-                                  'telefono': userController.telefono.text,
-                                  'email': userController.regMailController.text,
-                                  'password': userController.regPasswordController.text,
-                                };
-
-                                print(await firestoreHelper.isUserExists(userData['email']));
-
-                                bool userExists = await firestoreHelper.isUserExists(userData['email']);
-
-                                if(userExists){
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      padding: EdgeInsets.all(35),
-                                      content: Text(userData['email'] + " esiste gia ", style: TextStyle(fontSize: 18),),
-                                      duration: Duration(seconds: 3), // Durata del messaggio
-                                    ),
-                                  );
-
-                                }
-                                else{
-
-                                  if(_signupFormKey.currentState!.validate()){
-                                    userController.signUpWithCondition(
-                                      userController,
-                                      userController.regMailController.text,
-                                      userController.regPasswordController.text,
-                                    );
-
-                                    firestoreHelper.createOrUpdate("users", userController.regMailController.text, userData);
-                                    userController.clearSignupForm(userController, _signupFormKey);
-
-                                    //Snackbar
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                        padding: EdgeInsets.all(25),
-                                        content: Text('Utente registrato con successo!', style: TextStyle(fontSize: 18),),
-                                        duration: Duration(seconds: 3), // Durata del messaggio
-                                      ),
-                                    );
-
-                                }
-
-
-                                }
-
+                                  // Chiama il metodo registerUser del UserController per gestire la registrazione dell'utente nel databse
+                                  await userController.registerUser(userData, _signupFormKey);
                               },
                               child: Text(
                                 "REGISTRATI",

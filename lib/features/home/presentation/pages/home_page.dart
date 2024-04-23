@@ -1,7 +1,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get.dart';
 import 'package:ordini_ristorante/routes/routes.dart';
 
 import '../../../cart/data/repositiories_impl/cart_repo_impl.dart';
@@ -21,6 +20,7 @@ class _HomePageState extends State<HomePage> {
   // non utilizzo l'istanza ma mi permette di mantenere la peristenza del carrello fra le varie schermate
   final CartController _cartController = Get.put(CartController(CartRepoImpl()));
 
+  String logoUrl = "https://firebasestorage.googleapis.com/v0/b/ristorante-c94d2.appspot.com/o/logo.png?alt=media&token=feb755c3-97ba-4809-9b9b-a35ecdfbc6ed";
 
   @override
   Widget build(BuildContext context) {
@@ -28,9 +28,7 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         leading: Padding(
           padding: EdgeInsets.only(left: 6, bottom: 8),
-          child: Image.asset(
-            "assets/logo.png",
-          ),
+          child: Image.network(logoUrl)
         ),
         toolbarHeight: 75,
         title: Text(
@@ -62,7 +60,7 @@ class _HomePageState extends State<HomePage> {
       body: Container(
         decoration: BoxDecoration(
               image: DecorationImage(
-              image: AssetImage("assets/menu.png"),
+              image: AssetImage("assets/background.png"),
               fit: BoxFit.cover,
             ),
         ),

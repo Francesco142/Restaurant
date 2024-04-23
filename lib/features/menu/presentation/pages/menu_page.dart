@@ -128,9 +128,9 @@ class _MenuPageState extends State<MenuPage> {
                             gridDelegate:
                             const SliverGridDelegateWithFixedCrossAxisCount(
                                 crossAxisCount: 2,
-                                crossAxisSpacing: 16,
+                                crossAxisSpacing: 12,
                                 mainAxisSpacing: 16,
-                                childAspectRatio: 9 / 21),
+                                childAspectRatio: 9 / 23),
                             itemBuilder: (BuildContext context, int index) {
 
                               Dish dish = dishItems[index];
@@ -147,105 +147,95 @@ class _MenuPageState extends State<MenuPage> {
                                       ],
                                       color: Colors.white
                                   ),
-                                  child: Material(
-                                    child: InkWell(
-                                      // onTap: () {
-                                      //   Get.to(LoginPage());
-                                      // },
-                                      borderRadius: BorderRadius.circular(20),
-                                      child: Column(
-                                        children: [
-                                          Container(
-                                              margin: EdgeInsets.all(10),
-                                              child: Image.network(
-                                                dish.pictureUrl,
-                                                height: 147,
-                                                errorBuilder: (context, error, stackTrace) {
-                                                  return CircularProgressIndicator(strokeWidth: 1);
-                                                },
-                                              )),
-                                          Text(
-                                            dish.title,
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              //Se il testo ha più di una riga va in overflow
-                                              fontSize: dish.title.length > 17
-                                                  ? 13.0
-                                                  : 22.0,
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: 8, right: 8, top: 8),
-                                            child: Container(
-                                              alignment: Alignment.center,
-                                              height: 71,
-                                              child: Wrap(
-                                                children: [
-                                                  for (int i = 0;
-                                                  i < dish.ingredients.length;
-                                                  i++)
-                                                    Text(
-                                                      dish.ingredients[i] + ", ",
-                                                      style: TextStyle(
-                                                          fontSize: dish.ingredients
-                                                              .join(', ')
-                                                              .length >
-                                                              50
-                                                              ? 11
-                                                              : 13,
-                                                          color:
-                                                          Colors.grey.shade600),
-                                                    ),
-
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                          SizedBox(height: 21),
-                                          Row(
-                                            mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                          margin: EdgeInsets.all(10),
+                                          child: Image.network(
+                                            dish.pictureUrl,
+                                            height: 147,
+                                            errorBuilder: (context, error, stackTrace) {
+                                              return CircularProgressIndicator(strokeWidth: 2);
+                                            },
+                                          )),
+                                      Text(
+                                        dish.title,
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          //Se il testo ha più di una riga va in overflow
+                                          fontSize: dish.title.length > 17
+                                              ? 13.0
+                                              : 22.0,
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 8, right: 8, top: 14),
+                                        child: Container(
+                                          alignment: Alignment.center,
+                                          height: 71,
+                                          child: Wrap(
                                             children: [
-                                              SizedBox(width: 4),
-                                              Text(
-                                                "\$" + dish.price.toStringAsFixed(2),
-                                                style: TextStyle(
-                                                    fontSize: 18,
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Colors.green),
-                                              ),
-                                              IconButton(
-                                                  onPressed: () {
-                                                    cartController
-                                                        .decreaseQuantity(index);
-                                                  },
-                                                  icon: Icon(Icons.remove_circle)),
-                                               Obx(() =>
-                                                   Text(
-                                                 cartController.getQuantity()[index].toString(),
-                                                 style: TextStyle(fontSize: 18),
-                                               ),
-                                             ),
-                                              IconButton(
-                                                  onPressed: () {
-                                                    cartController
-                                                        .increaseQuantity(index);
-                                                  },
-                                                  icon: Icon(Icons.add_circle)),
+                                              for (int i = 0;
+                                              i < dish.ingredients.length;
+                                              i++)
+                                                Text(
+                                                  dish.ingredients[i] + ", ",
+                                                  style: TextStyle(
+                                                      fontSize: dish.ingredients
+                                                          .join(', ')
+                                                          .length >
+                                                          90
+                                                          ? 11.5
+                                                          : 13,
+                                                      color:
+                                                      Colors.grey.shade600, fontWeight: FontWeight.w700),
+                                                ),
+
                                             ],
                                           ),
-                                          SizedBox(height: 4),
-                                          ElevatedButton(
+                                        ),
+                                      ),
+                                      SizedBox(height: 35),
+                                      Text(
+                                        "\$" + dish.price.toStringAsFixed(2),
+                                        style: TextStyle(
+                                            fontSize: 22,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.green),
+                                      ),
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                        children: [
+                                          IconButton(
                                               onPressed: () {
-                                                cartController.addToCart(dish,
-                                                    cartController.getQuantity()[index]);
+                                                cartController
+                                                    .decreaseQuantity(index);
                                               },
-                                              child: Text("Aggiungi")),
+                                              icon: Icon(Icons.remove_circle)),
+                                           Obx(() =>
+                                               Text(
+                                             cartController.getQuantity()[index].toString(),
+                                             style: TextStyle(fontSize: 21),
+                                           ),
+                                         ),
+                                          IconButton(
+                                              onPressed: () {
+                                                cartController
+                                                    .increaseQuantity(index);
+                                              },
+                                              icon: Icon(Icons.add_circle)),
                                         ],
                                       ),
-                                    ),
+                                      SizedBox(height: 4),
+                                      ElevatedButton(
+                                          onPressed: () {
+                                            cartController.addToCart(dish,
+                                                cartController.getQuantity()[index]);
+                                          },
+                                          child: Text("Aggiungi")),
+                                    ],
                                   ),
                               );
                             }),
