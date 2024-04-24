@@ -70,7 +70,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
             child: Container(
-              margin: EdgeInsets.symmetric(horizontal: 38, vertical: 100),
+              margin: EdgeInsets.symmetric(horizontal: 38, vertical: 88),
               decoration: BoxDecoration(color: Colors.white.withOpacity(0.92), borderRadius: BorderRadius.circular(20)),
               child: Column(
                 children: [

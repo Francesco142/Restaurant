@@ -1,3 +1,5 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/state_manager.dart';
@@ -8,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ordini_ristorante/features/cart/presentation/controllers/cart_controller.dart';
 import 'package:ordini_ristorante/features/menu/data/models/dish.dart';
+import 'package:ordini_ristorante/features/menu/presentation/pages/detail_page.dart';
 import 'package:ordini_ristorante/routes/routes.dart';
 
 class MenuPage extends StatefulWidget {
@@ -94,7 +97,7 @@ class _MenuPageState extends State<MenuPage> {
                              },
                             child: Container(
                                 alignment: Alignment.center,
-                                width: 100,
+                                width: 110,
                                 margin: EdgeInsets.all(8),
                                 decoration: BoxDecoration(
                                     color: category == menuController.selectedCategory.value ? Theme.of(context).primaryColor : Colors.white,
@@ -108,7 +111,9 @@ class _MenuPageState extends State<MenuPage> {
                                 child: Text(
                                   category.toUpperCase(),
                                   style: TextStyle(
-                                      fontSize: 17, fontWeight: FontWeight.bold),
+                                      fontSize: category.length > 8 ? 13.5 : 17,
+                                      fontWeight: FontWeight.bold
+                                  ),
                                 )),
                           );
 
@@ -130,7 +135,7 @@ class _MenuPageState extends State<MenuPage> {
                                 crossAxisCount: 2,
                                 crossAxisSpacing: 12,
                                 mainAxisSpacing: 16,
-                                childAspectRatio: 9 / 23),
+                                childAspectRatio: 9 / 18),
                             itemBuilder: (BuildContext context, int index) {
 
                               Dish dish = dishItems[index];
@@ -147,95 +152,86 @@ class _MenuPageState extends State<MenuPage> {
                                       ],
                                       color: Colors.white
                                   ),
-                                  child: Column(
-                                    children: [
-                                      Container(
-                                          margin: EdgeInsets.all(10),
-                                          child: Image.network(
+                                  child: Material(
+                                    child: InkWell(
+                                      onTap: () {
+                                        Get.to(DetailsPage(
+                                          pictureUrl: dish.pictureUrl,
+                                          title: dish.title,
+                                          ingredients: dish.ingredients,
+                                          price: dish.price,
+                                        ));
+                                      },
+                                      borderRadius: BorderRadius.circular(20),
+                                      child: Column(
+                                        children: [
+                                          Image.network(
                                             dish.pictureUrl,
-                                            height: 147,
+                                            height: 120,
                                             errorBuilder: (context, error, stackTrace) {
                                               return CircularProgressIndicator(strokeWidth: 2);
                                             },
-                                          )),
-                                      Text(
-                                        dish.title,
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          //Se il testo ha più di una riga va in overflow
-                                          fontSize: dish.title.length > 17
-                                              ? 13.0
-                                              : 22.0,
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 8, right: 8, top: 14),
-                                        child: Container(
-                                          alignment: Alignment.center,
-                                          height: 71,
-                                          child: Wrap(
-                                            children: [
-                                              for (int i = 0;
-                                              i < dish.ingredients.length;
-                                              i++)
-                                                Text(
-                                                  dish.ingredients[i] + ", ",
-                                                  style: TextStyle(
-                                                      fontSize: dish.ingredients
-                                                          .join(', ')
-                                                          .length >
-                                                          90
-                                                          ? 11.5
-                                                          : 13,
-                                                      color:
-                                                      Colors.grey.shade600, fontWeight: FontWeight.w700),
-                                                ),
-
-                                            ],
                                           ),
-                                        ),
-                                      ),
-                                      SizedBox(height: 35),
-                                      Text(
-                                        "\$" + dish.price.toStringAsFixed(2),
-                                        style: TextStyle(
-                                            fontSize: 22,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.green),
-                                      ),
-                                      Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                        children: [
-                                          IconButton(
+                                          Expanded(
+                                            flex: 2,
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(top: 20),
+                                              child: Text(
+                                                dish.title,
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 18
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          Expanded(
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(top: 10),
+                                              child: Text(
+                                                "\$" + dish.price.toStringAsFixed(2),
+                                                style: TextStyle(
+                                                    fontSize: 22,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.green),
+                                              ),
+                                            ),
+                                          ),
+                                          Expanded(
+                                            child: Row(
+                                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                              children: [
+                                                IconButton(
+                                                    onPressed: () {
+                                                      cartController
+                                                          .decreaseQuantity(index);
+                                                    },
+                                                    icon: Icon(Icons.remove_circle)),
+                                                 Obx(() =>
+                                                     Text(
+                                                   cartController.getQuantity()[index].toString(),
+                                                   style: TextStyle(fontSize: 21),
+                                                 ),
+                                               ),
+                                                IconButton(
+                                                    onPressed: () {
+                                                      cartController
+                                                          .increaseQuantity(index);
+                                                    },
+                                                    icon: Icon(Icons.add_circle)),
+                                              ],
+                                            ),
+                                          ),
+                                          ElevatedButton(
                                               onPressed: () {
-                                                cartController
-                                                    .decreaseQuantity(index);
+                                                cartController.addToCart(dish,
+                                                    cartController.getQuantity()[index]);
                                               },
-                                              icon: Icon(Icons.remove_circle)),
-                                           Obx(() =>
-                                               Text(
-                                             cartController.getQuantity()[index].toString(),
-                                             style: TextStyle(fontSize: 21),
-                                           ),
-                                         ),
-                                          IconButton(
-                                              onPressed: () {
-                                                cartController
-                                                    .increaseQuantity(index);
-                                              },
-                                              icon: Icon(Icons.add_circle)),
+                                              child: Text("Aggiungi")),
                                         ],
                                       ),
-                                      SizedBox(height: 4),
-                                      ElevatedButton(
-                                          onPressed: () {
-                                            cartController.addToCart(dish,
-                                                cartController.getQuantity()[index]);
-                                          },
-                                          child: Text("Aggiungi")),
-                                    ],
+                                    ),
                                   ),
                               );
                             }),

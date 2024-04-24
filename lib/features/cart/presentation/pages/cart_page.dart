@@ -75,7 +75,7 @@ class CartPage extends StatelessWidget {
                     style: TextStyle(fontSize: 21, color: Colors.white),
                   );
                 }),
-                SizedBox(width: 50),
+                SizedBox(width: 30),
                 ElevatedButton(
                     child: Text("Ordina", style: TextStyle(fontSize: 21),),
                     style: ElevatedButton.styleFrom(
